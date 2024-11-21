@@ -17,3 +17,10 @@
 5. `docker compose up`  
    - Starts all the services defined in the `docker-compose.yml` file, creating and running containers for each service.  
    - Use `-d` to run services in detached mode (e.g., `docker compose up -d`).
+
+6. `docker-compose run --rm app sh -c "python manage.py test"`  
+   - Runs Django's test suite inside the `app` service container.  
+   - This command executes all test cases defined in your Django project.  
+   - The `--rm` flag ensures the container is removed after the tests are completed.  
+   - Use this to validate your application's functionality and ensure no tests are failing.
+
