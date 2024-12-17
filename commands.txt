@@ -14,16 +14,28 @@
    - Creates a new Django project named `app` in the current directory using `django-admin`, executed inside the `app` service container.  
    - The `--rm` flag cleans up the container after the project is created.
 
-5. `docker compose up`  
+5  `docker-compose run --rm app sh -c "python manage.py startapp core"`
+   - Creates a new Django project named `core` using an existing django project in the app directory.
+
+6. `docker compose up`  
    - Starts all the services defined in the `docker-compose.yml` file, creating and running containers for each service.  
    - Use `-d` to run services in detached mode (e.g., `docker compose up -d`).
+   
+7. `docker compose down`
+    - Stops and removes containers and networks created by docker compose up.
+    - Can rebuild the app by running the build command (`docker-compose build`)
 
-6. `docker-compose run --rm app sh -c "python manage.py test"`  'my alias locally: py test'
+8. `docker-compose run --rm app sh -c "python manage.py test"` - 'my alias locally: py test' -- for running the tests
+    docker-compose run --rm app sh -c "python manage.py wait_for_db" -- runs the wait_for_db command
+    docker-compose run --rm app sh -c "python manage.py wait_for_db && flake8" -- runs the wait_for_db command and liniting check
    - Runs Django's test suite inside the `app` service container.  
    - This command executes all test cases defined in your Django project.  
    - The `--rm` flag ensures the container is removed after the tests are completed.  
    - Use this to validate your application's functionality and ensure no tests are failing.
 
-7. `source venv/bin/activate`
+9. `docker-compose down --volumes`
+    - This stops and remove all containers, networks, services and also deletes all volumes associated with docker-compose
+
+10. `source venv/bin/activate`
    - To open python virtual environment
    - `deactivate` - to close the virtual environment
