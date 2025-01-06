@@ -1,41 +1,55 @@
-# Docker Commands and Their Uses
+# Python Terminal command
 
-1. `docker build .`  
+1. `source venv/bin/activate`
+   - To open python virtual environment
+   - `deactivate` - to close the virtual environment
+
+# Docker Commands and Their Uses
+1. `docker build .`
    - Use this command to build a Docker image based on the instructions in the `Dockerfile` located in the current directory.
 
-2. `docker-compose build`  
+2. `docker-compose build`
    - Builds the services defined in the `docker-compose.yml` file, incorporating any additional configurations or dependencies specified for each service.
 
-3. `docker-compose run --rm app sh -c "flake8"`  
-   - Runs the Flake8 linter inside the `app` service container to check your code for PEP8 compliance and other style issues.  
+3. `docker-compose run --rm app sh -c "flake8"`
+   - Runs the Flake8 linter inside the `app` service container to check your code for PEP8 compliance and other style issues.
    - The `--rm` flag ensures the container is removed after the command finishes.
 
-4. `docker-compose run --rm app sh -c "django-admin startproject app ."`  
-   - Creates a new Django project named `app` in the current directory using `django-admin`, executed inside the `app` service container.  
+4. `docker-compose run --rm app sh -c "django-admin startproject app ."`
+   - Creates a new Django project named `app` in the current directory using `django-admin`, executed inside the `app` service container.
    - The `--rm` flag cleans up the container after the project is created.
 
 5  `docker-compose run --rm app sh -c "python manage.py startapp core"`
    - Creates a new Django project named `core` using an existing django project in the app directory.
 
-6. `docker compose up`  
-   - Starts all the services defined in the `docker-compose.yml` file, creating and running containers for each service.  
+6. `docker compose up`
+   - Starts all the services defined in the `docker-compose.yml` file, creating and running containers for each service and also runs the server on localhost:8000
    - Use `-d` to run services in detached mode (e.g., `docker compose up -d`).
-   
+
 7. `docker compose down`
     - Stops and removes containers and networks created by docker compose up.
     - Can rebuild the app by running the build command (`docker-compose build`)
+     `docker-compose down --volumes`
+    - This stops and remove all containers, networks, services and also deletes all volumes associated with docker-compose
 
 8. `docker-compose run --rm app sh -c "python manage.py test"` - 'my alias locally: py test' -- for running the tests
     docker-compose run --rm app sh -c "python manage.py wait_for_db" -- runs the wait_for_db command
     docker-compose run --rm app sh -c "python manage.py wait_for_db && flake8" -- runs the wait_for_db command and liniting check
-   - Runs Django's test suite inside the `app` service container.  
-   - This command executes all test cases defined in your Django project.  
-   - The `--rm` flag ensures the container is removed after the tests are completed.  
+   - Runs Django's test suite inside the `app` service container.
+   - This command executes all test cases defined in your Django project.
+   - The `--rm` flag ensures the container is removed after the tests are completed.
    - Use this to validate your application's functionality and ensure no tests are failing.
 
-9. `docker-compose down --volumes`
-    - This stops and remove all containers, networks, services and also deletes all volumes associated with docker-compose
+9. `docker-compose run --rm app sh -c "python manage.py makemigrations"`
+   - This is going to create migrations for new models added or updates to models (eg: like after creating the user model in the core app)
+   - Thia will create add some auto generated files denoting the model just added in the migrations folder.
 
-10. `source venv/bin/activate`
-   - To open python virtual environment
-   - `deactivate` - to close the virtual environment
+10. `docker-compose run --rm app sh -c "python manage.py wait_for_db && python manage.py migrate"`
+   - This is going to apply the migrations we have recently created like the user model. For our first ever migration, we might need to clear the database
+   - to ensure consistent migration history, this can be done by running "docker volume ls" to get the volume name, "eg:pythonlearning_recipe_api_dev-db-data"
+   - (Note: run docker-compose down first before attempting to remove the volume)
+   - then running "docker volume rm pythonlearning_recipe_api_dev-db-data" to remove the volume.
+
+11.  `docker-compose run --rm app sh -c "python manage.py createsuperuser"`
+   -  This creates a django super user and also prompts us to input in our super user email and password
+
