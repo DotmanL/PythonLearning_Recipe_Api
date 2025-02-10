@@ -21,6 +21,8 @@
 
 5  `docker-compose run --rm app sh -c "python manage.py startapp core"`
    - Creates a new Django project named `core` using an existing django project in the app directory.
+  - When about to build the user api, we run this below to create another app called 'user'
+   -`docker-compose run --rm app sh -c "python manage.py startapp user"`
 
 6. `docker compose up`
    - Starts all the services defined in the `docker-compose.yml` file, creating and running containers for each service and also runs the server on localhost:8000
